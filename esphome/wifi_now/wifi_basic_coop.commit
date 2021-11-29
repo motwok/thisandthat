@@ -1,0 +1,51 @@
+Author: Emmo Emminghaus <mo2000@mo2000.de>  2020-09-30 23:59:27
+Committer: Emmo Emminghaus <mo2000@mo2000.de>  2020-09-30 23:59:27
+Parent: b5df50893bbb0adea00617e3d41a2fb45866fa1c (Update max31855.cpp (#1273))
+Child:  8a3448a46cc691fb83e4adcf500548ab79934eef (Merge branch 'dev' into wifi_basic_coop)
+Branches: remotes/origin/wifi_basic_coop, wifi_basic_coop
+Follows: v1.12.1
+Precedes: 
+
+    make the wifi component cooperative to other wifi based protocols like ESP-Now or ESP-Mesh
+
+------------------ esphome/components/wifi/wifi_component.cpp ------------------
+index df80c5b1..717b7502 100644
+@@ -520,7 +520,11 @@ void WiFiComponent::retry_connect() {
+   if (!this->is_captive_portal_active_() && (this->num_retried_ > 5 || this->error_from_callback_)) {
+     // If retry failed for more than 5 times, let's restart STA
+     ESP_LOGW(TAG, "Restarting WiFi adapter...");
++#ifdef WIFI_BASIC_COOP
++    this->wifi_disconnect_();
++#else
+     this->wifi_mode_(false, {});
++#endif
+     delay(100);  // NOLINT
+     this->num_retried_ = 0;
+   } else {
+
+--------------- esphome/components/wifi/wifi_component_esp32.cpp ---------------
+index 09b8433a..fafdd2d8 100644
+@@ -467,7 +467,9 @@ void WiFiComponent::wifi_pre_setup_() {
+   WiFi.onEvent(f);
+   WiFi.persistent(false);
+   // Make sure WiFi is in clean state before anything starts
++#ifndef WIFI_BASIC_COOP
+   this->wifi_mode_(false, false);
++#endif
+ }
+ wl_status_t WiFiComponent::wifi_sta_status_() { return WiFi.status(); }
+ bool WiFiComponent::wifi_scan_start_() {
+
+-------------- esphome/components/wifi/wifi_component_esp8266.cpp --------------
+index efffff0a..aa339d9b 100644
+@@ -488,7 +488,9 @@ void WiFiComponent::wifi_pre_setup_() {
+   wifi_set_event_handler_cb(&WiFiComponent::wifi_event_callback);
+ 
+   // Make sure WiFi is in clean state before anything starts
++#ifndef WIFI_BASIC_COOP
+   this->wifi_mode_(false, false);
++#endif
+ }
+ 
+ wl_status_t WiFiComponent::wifi_sta_status_() {
+

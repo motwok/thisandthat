@@ -12,7 +12,7 @@ Done
 
 ## Current features
 
-- Supports a WAITFORREADY gcode, when used waits until printer is ready or Timeout is reached (Paramter T or 60 seconds)
+- Supports a WAITFORREADY gcode, when used waits until printer is ready or Timeout is reached (Paramter TIMEOUT or 60 seconds)
 
 ## Planed
 

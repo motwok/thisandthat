@@ -26,4 +26,4 @@ Done
 
 ## Installation
 
-Just copy waitforready.py into your klippy/extras directory and add a line with "[waitforready}" to your printer.cfg
+Just copy waitforready.py into your klippy/extras directory and add a line with "[waitforready]" to your printer.cfg

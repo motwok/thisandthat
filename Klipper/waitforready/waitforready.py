@@ -23,9 +23,12 @@ class WaitForRestart:
 	cmd_WAITFORREADY_help = "Wait for printer ready"
 
 	def cmd_WAITFORREADY(self, gcmd):
+		timeout = gcmd.get_float('TIMEOUT', 60.)
 		while not self.is_printer_ready:
 			self.reactor.pause(self.reactor.monotonic() + 1.)
-
-
+			timeout = timeout - 1.
+			if timeout < 0:
+				return
+			
 def load_config(config):
 	return WaitForRestart(config)

@@ -1,4 +1,4 @@
-# a simple module that adds waitforready gcode command to Klipper
+# a simple module that adds WAITFORREADY gcode command to Klipper
 
 The idea is to wait e. g. after a FIRMWARE_RESTART for the ready state / event.
 

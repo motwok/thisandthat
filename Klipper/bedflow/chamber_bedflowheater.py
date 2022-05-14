@@ -52,8 +52,8 @@ class ChamberBedFlowHeater:
 		# setup gcode
 		gcode = self.printer.lookup_object("gcode")
 		gcode.register_mux_command("SET_HEATER_TEMPERATURE", "HEATER", self.name, self.cmd_SET_HEATER_TEMPERATURE, desc=self.cmd_SET_HEATER_TEMPERATURE_help)
-		gcode.register_command("M141", self.cmd_M141, self.cmd_M141_help)
-		gcode.register_command("M191", self.cmd_M191,self.cmd_M191_help)
+		gcode.register_command("M141", self.cmd_M141, desc=self.cmd_M141_help)
+		gcode.register_command("M191", self.cmd_M191, desc=self.cmd_M191_help)
 		
 		# start the timer when ready
 		self.printer.register_event_handler("klippy:ready", self._handle_ready)

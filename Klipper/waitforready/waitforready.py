@@ -24,10 +24,12 @@ class WaitForRestart:
 
 	def cmd_WAITFORREADY(self, gcmd):
 		timeout = gcmd.get_float('TIMEOUT', 60.)
-		while not self.is_printer_ready:
+		while True:
 			self.reactor.pause(self.reactor.monotonic() + 1.)
 			timeout = timeout - 1.
 			if timeout < 0:
+				return
+			if self.is_printer_ready:
 				return
 			
 def load_config(config):
